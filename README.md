@@ -1,154 +1,70 @@
-# FinAdvisor Global
- 🧩 Contexto:
-La empresa FinAdvisor Global desea implementar un sistema integral para la gestión de inversiones financieras personalizadas. Los clientes podrán crear uno o más portafolios, invertir en diversos instrumentos financieros (acciones, bonos, fondos, etc.) y consultar el rendimiento diario de sus inversiones. El sistema permitirá a asesores financieros y clientes visualizar la evolución de sus portafolios, analizar la rentabilidad, medir el riesgo, y generar reportes útiles para la toma de decisiones.
+# Gestión Operativa y Financiera del Banco EurekaBank
+📌 Contexto:
+EurekaBank ha implementado un sistema bancario que registra las operaciones financieras, cuentas, clientes, empleados y sucursales. Actualmente, se busca aprovechar estos datos para obtener inteligencia de negocio que permita:
 
-🎯 Objetivos del sistema:
-Registrar portafolios financieros por cliente.
+Evaluar la eficiencia operativa.
 
-Controlar qué asesor financiero está a cargo de cada cliente.
+Analizar el comportamiento del cliente.
 
-Almacenar las inversiones realizadas dentro de cada portafolio.
+Optimizar recursos por sucursal.
 
-Registrar transacciones de compra y venta por cada inversión.
+Controlar el uso de productos y servicios financieros.
 
-Registrar el valor total del portafolio de forma diaria.
+🎯 Objetivos del Sistema:
+Controlar los movimientos financieros por tipo (depósitos, retiros, transferencias).
 
-Calcular e interpretar indicadores clave como rentabilidad, riesgo, diversificación.
+Medir la productividad de los empleados (cuentas creadas, movimientos registrados).
 
-Permitir comparaciones históricas del valor del portafolio.
+Analizar el uso de servicios por moneda, ciudad, sucursal y cliente.
 
-Detectar portafolios con bajo rendimiento o alta exposición a riesgo.
+Detectar eventos críticos, como saldos negativos o cuentas canceladas.
 
-📦 Entidades clave (propuestas):
-🧍 Cliente
-ID_Cliente
+Comparar el desempeño por periodo, ciudad y tipo de producto financiero.
 
-Nombre
+Evaluar el costo y rentabilidad de operaciones según la moneda y tipo de transacción.
 
-Correo
+📦 Entidades clave (basadas en la base de datos actual):
+Sucursal
 
-Teléfono
+chr_sucucodigo, vch_sucunombre, vch_sucuciudad, vch_sucudireccion, int_sucucontcuenta
 
-FechaRegistro
+Cliente
 
-ID_Asesor (FK)
+chr_cliecodigo, vch_cliepaterno, vch_cliematerno, vch_clienombre, chr_cliedni, vch_clieciudad, vch_cliedireccion, vch_clietelefono, vch_clieemail
 
-🧑‍💼 AsesorFinanciero
-ID_Asesor
+Empleado
 
-Nombre
+chr_emplcodigo, vch_emplpaterno, vch_emplmaterno, vch_emplnombre, vch_emplusuario, vch_emplclave
 
-Correo
+Cuenta
 
-Especialidad
+chr_cuencodigo, chr_cliecodigo (FK), chr_emplcreacuenta (FK), chr_sucucodigo (FK), chr_monecodigo (FK), dec_cuensaldo, dtt_cuenfechacreacion, vch_cuenestado
 
-💼 Portafolio
-ID_Portafolio
+Movimiento
 
-Nombre
-
-Tipo (Ej. Conservador, Moderado, Agresivo)
-
-FechaCreacion
-
-ID_Cliente (FK)
-
-📈 InstrumentoFinanciero
-ID_Instrumento
-
-Nombre
-
-Tipo (Ej. Acción, Bono, ETF)
-
-Sector
-
-País
+chr_cuencodigo (FK), int_movinumero, dtt_movifecha, chr_emplcodigo (FK), chr_tipocodigo (FK), dec_moviimporte, chr_cuenreferencia
 
 Moneda
 
-RiesgoEstimado
+chr_monecodigo, vch_monedescripcion
 
-🧾 Inversión
-ID_Inversion
+TipoMovimiento
 
-ID_Portafolio (FK)
+chr_tipocodigo, vch_tipodescripcion, vch_tipoaccion, vch_tipoestado
 
-ID_Instrumento (FK)
+Parametro / InteresMensual / CostoMovimiento
 
-FechaInicio
+Para reglas sobre cargos y condiciones operativas.
 
-CantidadInvertidaInicial
+📘 Reglas de negocio relevantes:
+Las cuentas están asociadas a un cliente, un empleado, una sucursal y una moneda.
 
-🔁 Transacción
-ID_Transaccion
+Los movimientos están clasificados por tipo: depósito, retiro, transferencia, etc.
 
-ID_Inversion (FK)
+Si una cuenta tiene más de 15 movimientos, se cobra un cargo.
 
-Fecha
+Cada moneda tiene una tasa de interés mensual asociada.
 
-Tipo (Compra/Venta)
+Cada moneda también tiene un costo por operación.
 
-Monto
-
-Cantidad
-
-📅 ValorPortafolioDiario
-ID_Valor
-
-ID_Portafolio (FK)
-
-Fecha
-
-ValorTotal
-
-📊 IndicadorDesempeño
-ID_Indicador
-
-ID_Portafolio (FK)
-
-RentabilidadAnual (%)
-
-NivelDiversificación (Bajo/Medio/Alto)
-
-Volatilidad (%)
-
-RiesgoGeneral (Bajo/Medio/Alto)
-
-Clasificación (Ej. Estable, Riesgoso, Rentable)
-
-📘 Reglas de negocio:
-Cada cliente debe tener asignado un asesor financiero.
-
-Un cliente puede tener múltiples portafolios activos.
-
-Cada inversión está asociada a un único instrumento financiero.
-
-Una inversión puede tener múltiples transacciones.
-
-El valor total del portafolio se actualiza diariamente.
-
-La rentabilidad anual se calcula en base a la evolución diaria del valor del portafolio.
-
-Si el portafolio pierde más del 15% de su valor inicial, debe clasificarse como “Riesgoso”.
-
-💡 Ejemplos de instrumentos financieros:
-Acción: Apple Inc. (NASDAQ: AAPL)
-
-Bono corporativo: Microsoft 5Y
-
-Fondo indexado: S&P 500 ETF
-
-Criptomoneda: Bitcoin (BTC)
-
-🛠️ Posibles consultas:
-¿Cuál fue el valor total del portafolio de cada cliente durante los últimos 30 días?
-
-¿Qué instrumento financiero generó mayor rentabilidad para el cliente X en el último trimestre?
-
-¿Qué portafolios tienen una diversificación baja y riesgo alto actualmente?
-
-¿Cómo evolucionó el valor del portafolio “TechGrowth” desde su creación?
-
-¿Cuántas transacciones hizo el cliente X este mes y en qué instrumentos?
-
-![image](https://github.com/user-attachments/assets/2238c6a5-bb91-4adf-b2a6-07532c368dc5)
+Cada empleado puede estar activo en una sola sucursal a la vez.
